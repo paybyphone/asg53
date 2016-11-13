@@ -1,6 +1,6 @@
 # asg53
 
-asg53 is a tool for [AWS Lambda][1] that allows one to process
+`asg53` is a tool for [AWS Lambda][1] that allows one to process
 [EC2 Auto-Scaling][2] events and make modifications in [Route 53][3]. It is
 intended for use with SNS, and uses data-driven JSON representations of Route 53
 change batches that can be customized with [Go templates][4], supplied as
