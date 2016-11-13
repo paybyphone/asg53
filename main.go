@@ -119,9 +119,9 @@ type snsMessage struct {
 //     on a resource record set. This function operates on the existing
 //     change set, operating on the specific fields of the resource record set
 //     asked for. This means that whether or not a properly rendered Name
-//     field depends on where this function is called - if called too early
-//     on a field that has not been iterated on yet that contains a templated
-//     field, the data will be incomplete. Lookups that result in no data
+//     field exists depends on where this function is called - if called too early
+//     on a field that has not yet been iterated on, the templated data will
+//     be incomplete. Lookups that result in no data
 //     returned, an out of range value index, or a Route 53 API error will
 //     cause an error and fail the hook.
 //
