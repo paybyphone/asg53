@@ -24,7 +24,7 @@ After the build is complete, upload the `handler.zip` file to Lambda.
 
 ## Usage
 
-First you will want to read up on how to configure [Lifecycle Hooks][5] for Auto
+First you will want to read up on how to configure [Lifecycle Hooks][6] for Auto
 Scaling. This is a moderately complex process that may be documented here later.
 
 The Lambda function's role needs the following policy attached to it:
