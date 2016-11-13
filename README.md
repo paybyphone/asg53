@@ -131,8 +131,8 @@ Route 53 change batch. The same rules apply to the latter as they would when
 using the CLI, so see [there][6] for more details.
 
 The function can operate on both `autoscaling:EC2_INSTANCE_LAUNCHING` or
-`autoscaling:EC2_INSTANCE_TERMINATING` events, or any other autoscaling
-lifecycle event, for that matter. The function does not take any specific action
+`autoscaling:EC2_INSTANCE_TERMINATING` - the function does not handle one or
+the other in any special way. The function does not take any specific action
 for a certain lifecycle event. The only caveat is that you need to be cognizant
 of when you are processing termination events, as certain template fields won't
 be available (see below).
