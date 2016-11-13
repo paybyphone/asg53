@@ -151,12 +151,16 @@ Current fields are:
  * `{{.InstancePublicIPAddress}}`, for the instance's public IP address
  * `{{.ExistingRDataValue [set] [record]}}`, to get the existing RDATA
    on a resource record set. This function operates on the existing
-   change set, operating on the specific fields of the resource record set
-   asked for. This means that whether or not a properly rendered `Name`
-   field exists depends on where this function is called - if called too early
-   on a field that has not yet been iterated on, the templated data will be
-   incomplete. Lookups that result in no data returned, an out of range value
-   index, or a Route 53 API error will cause an error.
+   change set, performing a Route 53 `ListResourceRecordSets` request
+   looking for the record specified in the `Name` field of the change
+   specified by `set`, returning the `ResourceRecord` `Value` at the
+   index specified by `record`. It should be noted that the function is called
+   on the change set as it currently exists. This means that whether or not a
+   properly rendered `Name` field exists depends on where this function is
+   called - if called too early on a field that has not yet been iterated on,
+   the templated data will be incomplete. Lookups that result in no data
+   returned, an out of range value index, or a Route 53 API error will cause
+   an error.
 
 ### Note on terminating instances
 
