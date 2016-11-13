@@ -8,8 +8,15 @@ notification metadata.
 
 ## Building
 
+This is a Go-based Lambda function, and hence needs to be wrapped with a shim.
+We use [aws-lambda-go][5], which also provides a Docker container with access
+to the toolchain.
+
+Follow the directions below to build:
+
 ```
 go get github.com/paybyphone/asg53
+cd $GOPATH/src/github.com/paybyphone/asg53
 docker run --rm -v $GOPATH:$GOPATH -e GOPATH=$GOPATH -w `pwd` eawsy/aws-lambda-go
 ```
 
@@ -178,3 +185,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+[1]: https://aws.amazon.com/lambda/
+[2]: https://aws.amazon.com/autoscaling/
+[3]: https://aws.amazon.com/route53/
+[4]: https://golang.org/pkg/text/template/
+[5]: https://github.com/eawsy/aws-lambda-go
+[6]: http://docs.aws.amazon.com/autoscaling/latest/userguide/lifecycle-hooks.html
+[7]: http://docs.aws.amazon.com/cli/latest/reference/route53/change-resource-record-sets.html
