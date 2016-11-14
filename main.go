@@ -115,6 +115,7 @@ type snsMessage struct {
 //   * {{.InstanceID}}, for the instance ID
 //   * {{.InstancePrivateIPAddress}}, for the instance's private IP address
 //   * {{.InstancePublicIPAddress}}, for the instance's public IP address
+//   * {{.HostedZoneID}}, for the Route 53 hosted zone ID
 //   * {{.ExistingRDataValue [set] [record]}}, to get the existing RDATA
 //     on a resource record set. This function operates on the existing
 //     change set, operating on the specific fields of the resource record set
@@ -333,13 +334,13 @@ func (c *awsClient) CompleteAutoscalingAction(messageData snsMessage, result str
 // instanceData represents the instance data available to be templated.
 type instanceData struct {
 	// An AWS client instance.
-	Client *awsClient
+	client *awsClient
 
 	// The route 53 hosted zone to operate on.
 	HostedZoneID string
 
 	// The route 53 change batch we are operating on.
-	Batch []*route53.Change
+	batch []*route53.Change
 
 	// The instance ID.
 	InstanceID string
@@ -354,12 +355,12 @@ type instanceData struct {
 // populate returns an instanceData struct with the fields that we need set.
 func populate(client *awsClient, instanceID, hostedZoneID string, batch []*route53.Change) (*instanceData, error) {
 	data := instanceData{
-		Client:       client,
+		client:       client,
 		HostedZoneID: hostedZoneID,
-		Batch:        batch,
+		batch:        batch,
 	}
 
-	instance, err := data.Client.FetchEC2InstanceData(instanceID)
+	instance, err := data.client.FetchEC2InstanceData(instanceID)
 	if err != nil {
 		return &data, err
 	}
@@ -389,11 +390,11 @@ func populate(client *awsClient, instanceID, hostedZoneID string, batch []*route
 // This function returns an error if the resource record set does not exist,
 // or if the requested resource record index is out of range.
 func (d *instanceData) ExistingRDataValue(rrSetIndex, rDataIndex int) (string, error) {
-	if len(d.Batch)-1 < rrSetIndex {
+	if len(d.batch)-1 < rrSetIndex {
 		return "", fmt.Errorf("Requested rrSet index of %d out of range", rrSetIndex)
 	}
-	rrSet := d.Batch[rrSetIndex]
-	rData, err := d.Client.FindRoute53ResourceRecord(d.HostedZoneID, *rrSet.ResourceRecordSet.Name, *rrSet.ResourceRecordSet.Type)
+	rrSet := d.batch[rrSetIndex]
+	rData, err := d.client.FindRoute53ResourceRecord(d.HostedZoneID, *rrSet.ResourceRecordSet.Name, *rrSet.ResourceRecordSet.Type)
 	if err != nil {
 		return "", err
 	}
@@ -409,7 +410,7 @@ func (d *instanceData) ExistingRDataValue(rrSetIndex, rDataIndex int) (string, e
 // ResourceRecordSet.Name and all fields in ResourceRecordSet.Records.
 func (d *instanceData) WriteTemplateFields() error {
 	log.Println("Writing template values for change batch")
-	for n, rrSet := range d.Batch {
+	for n, rrSet := range d.batch {
 		nameRendered := &bytes.Buffer{}
 		valuesRendered := []string{}
 

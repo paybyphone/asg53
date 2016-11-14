@@ -183,9 +183,9 @@ func TestPopulate(t *testing.T) {
 	}
 
 	expected := &instanceData{
-		Client:                   client,
+		client:                   client,
 		HostedZoneID:             metadata.HostedZoneID,
-		Batch:                    metadata.Changes,
+		batch:                    metadata.Changes,
 		InstanceID:               "i-123456789",
 		InstancePrivateIPAddress: "10.0.0.1",
 		InstancePublicIPAddress:  "54.0.0.1",
