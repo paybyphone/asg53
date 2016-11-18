@@ -139,7 +139,7 @@ be available (see below).
 ## Template Reference
 
 The data is driven by Go tempalte values (using a double-curly bracer closure -
-`{{}}`) that allow you to access specific fields related to the instance.
+`{{}}`) that allows you to access specific fields related to the instance.
 
 Note that fields are interpolated on `Name` and `Value` fields only (the latter
 in the `ResourceRecords` list).
